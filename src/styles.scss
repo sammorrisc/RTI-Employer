@@ -1,1 +1,48 @@
 /* You can add global styles to this file, and also import other style files */
+// @import '~@ionic/angular/css/core.css';
+// @import '~@ionic/angular/css/normalize.css';
+// @import '~@ionic/angular/css/flex.css';
+// @import '~@ionic/angular/css/padding.css';
+// @import '~@ionic/angular/css/float.css';
+// @import '~@ionic/angular/css/text-alignment.css';
+// @import '~@ionic/angular/css/text-transformation.css';
+// @import '~@ionic/angular/css/flex-utils.css';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~bootstrap/dist/css/bootstrap.css";
+
+html,body{
+    height: 100%;
+}
+
+body{
+    margin: 0px;
+}
+* {
+    font-family: 'Roboto';
+    box-sizing: border-box;
+}
+
+button.employee-btn {
+    border-radius: 6px;
+    height: 40px;
+    width: 73px;
+    border: none;
+    font-size: .875rem;
+    font-weight: 500;
+
+    
+    &.transparent-primary {
+        background-color: #EDF8FF;
+        color: #1DA1F2
+    }
+    &.filled-primary {
+        background-color: #1DA1F2;
+        color: white;
+    }
+    &.flexible-width{
+        min-width: 73px;
+        width: auto;
+    }
+}
+
+

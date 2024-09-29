@@ -1,0 +1,17 @@
+.custom-header{
+    .grid-box{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap:1rem;
+        padding: 1rem;
+    }
+    .current-month-year{
+        text-align: center;
+        font-size: 1.125rem;
+        font-weight: 500;
+        display: flex;
+        justify-content: center;
+        gap:1rem;
+        margin-block:1rem ;
+    }
+}

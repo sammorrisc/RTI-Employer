@@ -1,0 +1,49 @@
+$primary-color:#1DA1F2;
+:host {
+    max-height: 100dvh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+
+header.list {
+    background-color: $primary-color;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 1rem;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+
+    img {
+        width: 240px;
+        height: 200px;
+        background: url('/src/assets/IMG_0551.png');
+    }
+}
+
+footer{
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    button{
+        background-color: $primary-color;
+        border-radius: 8px;
+        border: none;
+        width: 50px;
+        height: 50px;
+        color: white;
+        font-size: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
+}

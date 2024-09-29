@@ -1,0 +1,14 @@
+<header class="list fs-16 fw-500">
+    Employee List
+</header>
+<main>
+    <img [src]="'/assets/icons/no-employee-records.svg'" alt="">
+</main>
+<!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addEmployee()">
+        <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+</ion-fab> -->
+<footer>
+    <button (click)="$event.stopPropagation();addEmployee()">+</button>
+</footer>

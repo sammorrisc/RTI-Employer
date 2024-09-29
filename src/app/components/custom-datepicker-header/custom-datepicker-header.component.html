@@ -1,0 +1,32 @@
+<div class="custom-header">
+    <div class="grid-box">
+        <button class="employee-btn transparent-primary flexible-width"
+        [ngClass]="{'filled-primary': selectedType === 'today'}"
+        (click)="buttonSelectHandler($event,'today')">
+            Today
+        </button>
+        <button class="employee-btn transparent-primary flexible-width"
+        [ngClass]="{'filled-primary': selectedType === 'next-monday'}"
+        (click)="buttonSelectHandler($event,'next-monday')"
+        >
+            Next Monday
+        </button>
+        <button class="employee-btn transparent-primary flexible-width"
+        [ngClass]="{'filled-primary': selectedType === 'next-tuesday'}"
+        (click)="buttonSelectHandler($event,'next-tuesday')"
+        >
+            Next Tuesday
+        </button>
+        <button class="employee-btn transparent-primary flexible-width"
+        [ngClass]="{'filled-primary': selectedType === 'after-one-week'}"
+        (click)="buttonSelectHandler($event,'after-one-week')"
+        >
+            After 1 week
+        </button>
+    </div>
+    <div class="current-month-year">
+        <img src="/assets/icons/left-side.svg" alt="" (click)="buttonSelectHandler($event,'previous-month')">
+        <span (click)="buttonSelectHandler($event,'multi-year-view')">{{currentDate | date : 'MMMM YYYY'}}</span>
+        <img src="/assets/icons/right-side.svg" alt="" (click)="buttonSelectHandler($event,'next-month')">
+    </div>
+</div>
