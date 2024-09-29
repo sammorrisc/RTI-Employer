@@ -12,16 +12,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'angular-16-scss-two'`, () => {
+  it(`should have as title 'rti-employer-app'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-16-scss-two');
+    expect(app.title).toEqual('rti-employer-app');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('angular-16-scss-two app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('rti-employer-app app is running!');
   });
 });

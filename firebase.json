@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/angular-16-scss-two",
+    "public": "dist/rti-employer-app",
     "ignore": [
       "firebase.json",
       "**/.*",
