@@ -170,6 +170,7 @@ export class EmployeeFormComponent implements OnInit{
     .pipe(
       tap(res =>{
         console.log(res);
+        this.employeeFG.reset()
       })
     )
     .subscribe()
