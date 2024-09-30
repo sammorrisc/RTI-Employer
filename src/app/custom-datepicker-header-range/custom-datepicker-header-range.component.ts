@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewContainerRef } from '@angular/core';
-import { EmployeeServiceService } from '../services/employee-service.service';
+import { DatePickerService } from '../services/date-picker.service';
 
 @Component({
   selector: 'app-custom-datepicker-header-range',
@@ -10,7 +10,7 @@ import { EmployeeServiceService } from '../services/employee-service.service';
 export class CustomDatepickerHeaderRangeComponent {
   @Output() buttonSelectedEmitter = new EventEmitter<string>();
   constructor(
-    private employeeService: EmployeeServiceService
+    private employeeService: DatePickerService
   ) { }
 
   ngOnInit() {}
@@ -18,6 +18,6 @@ export class CustomDatepickerHeaderRangeComponent {
 
   buttonSelectHandler(event: Event, type: string) {
     event.stopPropagation();
-    this.employeeService.headerButtonSubject.next(type);
+    // this.employeeService.headerButtonSubject.next(type);
   }
 }

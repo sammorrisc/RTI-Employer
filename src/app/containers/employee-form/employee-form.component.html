@@ -37,10 +37,11 @@
                     <div class="value-holder">{{employeeFG.get('joinedAt')?.value | date}}</div>
                 </div>
                 <div class="d-flex gap-1">
-                    <!-- matDatepickerCancel -->
-                    <button class="employee-btn transparent-primary">Cancel</button>
-                    <!-- matDatepickerApply -->
+                    <button 
+                    matDatepickerCancel
+                    class="employee-btn transparent-primary">Cancel</button>
                     <button
+                    matDatepickerApply
                     class="employee-btn filled-primary"
                     >Save</button>
                 </div>
