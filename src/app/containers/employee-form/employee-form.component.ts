@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChil
 import { FormControl, FormGroup } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { CustomDatepickerHeaderComponent } from 'src/app/components';
 import { CustomDatepickerHeaderRangeComponent } from 'src/app/custom-datepicker-header-range/custom-datepicker-header-range.component';
@@ -47,7 +48,7 @@ export class EmployeeFormComponent implements OnInit{
   employeeFG: FormGroup = new FormGroup({
     name: new FormControl<string>('',{nonNullable:true}),
     role: new FormControl<string>('',{nonNullable:true}),
-    joinedAt: new FormControl<Date>(new Date()),
+    joinedAt: new FormControl<Date | null>(null),
     // savedJoinedAt: new FormControl<Date>(new Date()),
     // leftAt: new FormControl<Date | null>(null),
   });
@@ -59,6 +60,7 @@ export class EmployeeFormComponent implements OnInit{
     private datePickerService:DatePickerService,
     private employeeService:EmployeeService,
     private cdr:ChangeDetectorRef,
+    private router:Router,
     private dateAdapter: DateAdapter<Date>
   ){}
   ngOnInit(): void {
@@ -174,5 +176,10 @@ export class EmployeeFormComponent implements OnInit{
       })
     )
     .subscribe()
+  }
+
+  cancelHandler(event:Event){
+    event.stopPropagation();
+    this.router.navigate(['./employee-list'])
   }
 }
