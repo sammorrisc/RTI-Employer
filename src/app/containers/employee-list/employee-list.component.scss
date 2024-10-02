@@ -1,4 +1,6 @@
 $primary-color:#1DA1F2;
+$text-color:#323238;
+$text-color-grey:#949C9E;
 :host {
     max-height: 100dvh;
     max-height: 100vh;
@@ -17,15 +19,44 @@ header.list {
 }
 
 main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
+    &.no-content{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+    }
+    .employee-section-heading{
+        color: $primary-color;
+        background-color: #F2F2F2;
+        padding: 1rem;
+    }
+    section.with-content{
+        display: flex;
+        flex-direction: column;
+    }
 
     img {
         width: 240px;
         height: 200px;
         background: url('/src/assets/IMG_0551.png');
+    }
+    .employee-card{
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-bottom: 1px solid #E5E5E5;
+        .title{
+            font-size: 1rem;
+            font-weight: 500;
+            color: $text-color;
+        }
+        .sub-title{
+            font-size: 14px;
+            font-weight: 400;
+            color: $text-color-grey;
+        }
     }
 }
 

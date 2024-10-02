@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
   private db!: IDBDatabase;
+  private dbReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() {
     this.openDatabase();
@@ -26,11 +27,17 @@ export class EmployeeService {
     request.onsuccess = (event: Event) => {
       this.db = (event.target as IDBOpenDBRequest).result;
       console.log('Database opened successfully');
+      this.dbReady.next(true); // Mark the database as ready
     };
 
     request.onerror = (event: Event) => {
       console.error('Error opening database', (event.target as IDBOpenDBRequest).error);
+      this.dbReady.error((event.target as IDBOpenDBRequest).error); // Error state
     };
+  }
+
+  waitForDatabase(): Observable<boolean> {
+    return this.dbReady.asObservable();
   }
 
   // Add an employee
@@ -38,7 +45,6 @@ export class EmployeeService {
     return new Observable((observer) => {
       const transaction = this.db?.transaction(['employees'], 'readwrite');
       const objectStore = transaction?.objectStore('employees');
-
       const request = objectStore?.add(employee);
 
       request.onsuccess = () => {
