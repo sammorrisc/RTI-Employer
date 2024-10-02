@@ -25,8 +25,12 @@
         </button>
     </div>
     <div class="current-month-year">
-        <img src="/assets/icons/left-side.svg" alt="" (click)="buttonSelectHandler($event,'previous-month')">
-        <span (click)="buttonSelectHandler($event,'multi-year-view')">{{currentDate | date : 'MMMM YYYY'}}</span>
-        <img src="/assets/icons/right-side.svg" alt="" (click)="buttonSelectHandler($event,'next-month')">
+        <img src="/assets/icons/left-side.svg" alt="" 
+        (click)="buttonSelectHandler($event,'previous-month')">
+        <span (click)="viewChangeHandler($event)">
+            {{currentViewLabel}}
+        </span>
+        <img src="/assets/icons/right-side.svg" alt="" 
+        (click)="buttonSelectHandler($event,'next-month')">
     </div>
 </div>

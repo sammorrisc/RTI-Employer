@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CustomDatepickerHeaderRangeComponent } from './custom-datepicker-header-range/custom-datepicker-header-range.component';
 
@@ -41,7 +41,7 @@ import { CustomDatepickerHeaderRangeComponent } from './custom-datepicker-header
     IonicModule.forRoot()
 
   ],
-  providers: [NativeDateAdapter],
+  providers: [NativeDateAdapter, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
