@@ -19,6 +19,7 @@ header.list {
 }
 
 main {
+    flex: 1;
     &.no-content{
         display: flex;
         justify-content: center;
