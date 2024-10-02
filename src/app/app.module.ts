@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
 
 
 import { AppComponent } from './app.component';
@@ -37,9 +38,8 @@ import * as constantData from 'src/data/data';
     MatButtonModule,
     MatNativeDateModule,
     BrowserAnimationsModule,
-    // MatDateFnsModule, 
-    // MatLuxonDateModule, 
-    // MatMomentDateModule,
+    CdkDropList, 
+    CdkDrag,
     IonicModule.forRoot()
 
   ],

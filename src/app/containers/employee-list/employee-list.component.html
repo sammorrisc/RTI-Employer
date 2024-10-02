@@ -9,8 +9,11 @@
 <ng-container *ngIf=" employees() && employees().length > 0">
     <main >
         <header class="employee-section-heading">Current Employees</header>
-        <section class="with-content">
-            <div class="employee-card" *ngFor="let each of employees();index as index">
+        <section class="with-content" cdkDropList>
+            <div class="employee-card" 
+            cdkDrag
+            cdkDragLockAxis="x"
+            *ngFor="let each of employees();index as index">
                 <div class="fw-500 title">
                     {{each.name}}
                 </div>
