@@ -1,21 +1,23 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
-
-
-import { AppComponent } from './app.component';
-import * as appComponents from './components';
-import * as appContainers from './containers';
-import { CommonModule } from '@angular/common';
-import { AppRoutingModule } from './app.routes';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
+
+import { AppComponent } from './app.component';
+import * as appComponents from './components';
+import * as appContainers from './containers';
+import { AppRoutingModule } from './app.routes';
 import { CustomDatepickerHeaderRangeComponent } from './custom-datepicker-header-range/custom-datepicker-header-range.component';
+import * as constantData from 'src/data/data';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,11 @@ import { CustomDatepickerHeaderRangeComponent } from './custom-datepicker-header
     IonicModule.forRoot()
 
   ],
-  providers: [NativeDateAdapter, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
+  providers: [NativeDateAdapter, 
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    // { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT }
+    { provide: MAT_DATE_FORMATS, useValue: constantData.CUSTOM_DATE_FORMATS }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
