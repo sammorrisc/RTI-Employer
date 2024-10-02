@@ -61,9 +61,11 @@ main {
 }
 
 footer{
-    position: absolute;
+    position: sticky;
+    width: fit-content;
     bottom: 1rem;
     right: 1rem;
+    margin-left: auto;
     button{
         background-color: $primary-color;
         border-radius: 8px;
@@ -71,10 +73,6 @@ footer{
         width: 50px;
         height: 50px;
         color: white;
-        font-size: 28px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        
+        font-size: 28px;        
     }
 }
