@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, signal, Signal,ViewContainerRef } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { MatCalendar, MatCalendarHeader, MatDatepickerIntl } from '@angular/material/datepicker';
 import { tap } from 'rxjs';
@@ -16,7 +16,7 @@ type ButtonTypes = 'today' | 'next-monday' | 'next-tuesday' | 'after-one-week'
 export class CustomDatepickerHeaderComponent<D> {
   currentDate:any = new Date();
   selectedType: ButtonTypes = null;
-  currentViewLabel!:string;
+  currentViewLabel = signal('');
 
   constructor(
     public _calendar: MatCalendar<Date>,
@@ -128,22 +128,23 @@ export class CustomDatepickerHeaderComponent<D> {
 
   updateCalendarHeader() {
     const activeDate = this._calendar.activeDate;
-
+    let currentViewLabel:string;
     if (this._calendar.currentView === 'month') {
       // Show full month and year, e.g., October 2024
-      this.currentViewLabel = `${format(activeDate, 'MMMM') } ${this._dateAdapter.getYear(activeDate)}`;
+      currentViewLabel = `${format(activeDate, 'MMMM') } ${this._dateAdapter.getYear(activeDate)}`;
       
     } else if (this._calendar.currentView === 'year') {
       // Show only the year, e.g., 2024
-      this.currentViewLabel = `${this._dateAdapter.getYear(activeDate)}`;
+      currentViewLabel = `${this._dateAdapter.getYear(activeDate)}`;
     } else if (this._calendar.currentView === 'multi-year') {
       // Show range of years, e.g., 2010 - 2040
       const startYear = this.getStartYearForMultiYearView(activeDate);
       const endYear = this.getEndYearForMultiYearView(activeDate);
-      this.currentViewLabel = `${startYear} - ${endYear}`;
+      currentViewLabel = `${startYear} - ${endYear}`;
     }
     console.log('calendar header is below...');
-    console.log(this.currentViewLabel);
+    this.currentViewLabel.update(()=>{return currentViewLabel})
+    console.log(this.currentViewLabel());
   }
 
   getStartYearForMultiYearView(date: Date): number {

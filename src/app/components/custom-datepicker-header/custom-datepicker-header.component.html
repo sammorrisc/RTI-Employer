@@ -26,11 +26,11 @@
     </div>
     <div class="current-month-year">
         <img src="/assets/icons/left-side.svg" alt="" 
-        (click)="buttonSelectHandler($event,'previous-month')">
+        (click)="previous()">
         <span (click)="viewChangeHandler($event)">
-            {{currentViewLabel}}
+            {{currentViewLabel()}}
         </span>
         <img src="/assets/icons/right-side.svg" alt="" 
-        (click)="buttonSelectHandler($event,'next-month')">
+        (click)="next()">
     </div>
 </div>
