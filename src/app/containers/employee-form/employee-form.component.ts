@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import {  filter, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { CustomDatepickerHeaderComponent } from 'src/app/components';
 import { CustomDatepickerHeaderRangeComponent } from 'src/app/custom-datepicker-header-range/custom-datepicker-header-range.component';
 import {DatePickerService,EmployeeService} from 'src/app/services';
@@ -14,7 +14,7 @@ import {DatePickerService,EmployeeService} from 'src/app/services';
   styleUrls: ['./employee-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EmployeeFormComponent implements OnInit{
+export class EmployeeFormComponent implements OnInit,OnDestroy{
   public employeeRoles = [
     {
       text: 'Product Designer',
@@ -46,68 +46,63 @@ export class EmployeeFormComponent implements OnInit{
   customHeaderForStart = CustomDatepickerHeaderComponent;
   customHeaderForEnd = CustomDatepickerHeaderRangeComponent;
   employeeFG: FormGroup = new FormGroup({
-    name: new FormControl<string>('',{nonNullable:true}),
-    role: new FormControl<string>('',{nonNullable:true}),
+    name: new FormControl<string>('',{nonNullable:true,validators:[Validators.required]}),
+    role: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     joinedAt: new FormControl<Date | null>(null),
-    // savedJoinedAt: new FormControl<Date>(new Date()),
     // leftAt: new FormControl<Date | null>(null),
   });
   isActionSheetOpen:boolean = false;
   startViewOfStartDate:'month'|'year'|'multi-year'='month';
   startAt:Date = new Date();
-
+  destroy$ = new Subject<boolean>();
+  employeeId = signal<null | string>(null);
   constructor(
     private datePickerService:DatePickerService,
     private employeeService:EmployeeService,
     private cdr:ChangeDetectorRef,
     private router:Router,
+    private activatedRoute:ActivatedRoute,
     private dateAdapter: DateAdapter<Date>
   ){}
   ngOnInit(): void {
     this.headerInputController();
+    this.queryParamsHandling();
     // this.headerOutputController();
 
     
   }
 
-  // private headerOutputController() {
-  //   this.datePickerService.headerButtonSubject.asObservable()
-  //     .pipe(
-  //       tap((data) => {
-  //         console.log(data);
-  //         if (data === 'multi-year-view') {
-  //           console.log('closing startDatePicker...');
-  //           this.startViewOfStartDate = 'multi-year';
-  //           this.startDatePicker.close();
-  //           this.cdr.detectChanges();
-  //         }
-  //         if (data === 'previous-month'){
-  //           const todayPreviousMonth = subMonths(new Date(),1);
-  //           console.log(todayPreviousMonth);
-  //           this.startAt = todayPreviousMonth;
-  //           this.datePickerService.customHeaderInput.next({currentDate:todayPreviousMonth});
-  //           // this.startDatePicker.close();
-  //         }
+  ngOnDestroy(): void {
+      this.destroy$.next(true);
+      this.destroy$.complete();
+  }
 
-  //       }),
-  //       delay(300),
-  //       tap((data) => {
-  //         if (data === 'multi-year-view'){
-  //           console.log('open multi-year-view');
-  //           this.openDatePicker(this.startDatePicker);
-  //         }
-  //         if (data === 'previous-month') {
-  //           // this.openDatePicker(this.startDatePicker);
-            
-  //           // const todayPreviousMonth = subMonths(new Date(), 1);
-  //           // console.log(todayPreviousMonth);
-  //           // this.startAt = todayPreviousMonth
-  //         }
-  //       })
-  //     )
-  //     .subscribe();
-  // }
+  private queryParamsHandling(){
+    this.activatedRoute.queryParams.pipe(
+      filter(params => !!params['id']),
+      switchMap(params => {
+        return this.employeeService.waitForDatabase()
+          .pipe(
+            switchMap(isOpen => isOpen ? this.employeeService.getEmployeeById(params['id']) : of(null))
+          )
+        }
+      ),
+      tap((res)=>{
+        this.employeeId.set(res.id);
+        this.employeeFG.patchValue(res,{emitEvent:false})
+      }),
+      takeUntil(this.destroy$)
+    )
+    .subscribe()
+    ;
+  }
 
+  checkDBOpenStatus():Observable<boolean>{
+    return this.employeeService.waitForDatabase()
+    .pipe(
+      filter((val)=>!!val)
+    );
+  }
   private headerInputController(){
     this.employeeFG.get('joinedAt')?.valueChanges
     .pipe(
@@ -116,35 +111,11 @@ export class EmployeeFormComponent implements OnInit{
           currentDate: joinedAtDate
         }
         this.datePickerService.customHeaderInput.next(data);
-      })
+      }),
+      takeUntil(this.destroy$)
     )
     .subscribe();
   }
-
-  // ngAfterViewInit(): void {}
-  // goToPreviousMonth(): void {
-  //   // Get the current active date
-  //   const currentActiveDate = this.startDatePicker.datepickerInput.getStartValue() || new Date();
-
-  //   // Subtract one month from the active date
-  //   const previousMonth = this.dateAdapter.addCalendarMonths(currentActiveDate, -1);
-
-  //   // Set the new active date
-  //   // this.startDatePicker.act = previousMonth;
-
-  //   // Open the startDatePicker (optional if you want to view it)
-  //   this.startDatePicker.open();
-  // }
-  // selectNextTuesday(): void {
-  //   const today = new Date();
-  //   const dayOfWeek = today.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
-  //   const daysUntilNextTuesday = (9 - dayOfWeek) % 7 || 7; // Days until next Tuesday
-
-  //   const nextTuesday = new Date(today);
-  //   nextTuesday.setDate(today.getDate() + daysUntilNextTuesday);
-
-  //   // this.selectedDate = nextTuesday;
-  // }
 
   openActionSheet(){
     this.isActionSheetOpen = !this.isActionSheetOpen;
@@ -152,12 +123,7 @@ export class EmployeeFormComponent implements OnInit{
 
   openDatePicker(datePicker:MatDatepicker<any>){
     datePicker.open();
-    console.log('opening...')
     this.cdr.detectChanges();
-  }
-
-  headerButtonSelect(data:any){
-    console.log(data);
   }
 
   actionSheetDismissHandler(event:any){
@@ -167,13 +133,12 @@ export class EmployeeFormComponent implements OnInit{
 
   saveDateHandler(event:Event){
     event.stopPropagation();
-    console.log(this.employeeFG.value);
     this.employeeService.addEmployee(this.employeeFG.value)
     .pipe(
-      tap(res =>{
-        console.log(res);
-        this.employeeFG.reset()
-      })
+      tap((res) =>{
+        this.employeeFG.reset();
+      }),
+      takeUntil(this.destroy$)
     )
     .subscribe()
   }

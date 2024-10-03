@@ -13,7 +13,7 @@
             <div class="employee-card" 
             cdkDrag
             cdkDragLockAxis="x"
-            *ngFor="let each of employees();index as index">
+            *ngFor="let each of employees();index as index" (click)="editEmployee($event,each.id)">
                 <div class="fw-500 title">
                     {{each.name}}
                 </div>

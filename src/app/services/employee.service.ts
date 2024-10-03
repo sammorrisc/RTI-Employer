@@ -21,7 +21,7 @@ export class EmployeeService {
 
       // Create object store if it doesn't already exist
       const objectStore = db.createObjectStore('employees', { keyPath: 'id', autoIncrement: true });
-      objectStore.createIndex('name', 'name', { unique: false });
+      // objectStore.createIndex('name', 'name', { unique: false });
     };
 
     request.onsuccess = (event: Event) => {
@@ -65,7 +65,6 @@ export class EmployeeService {
       const objectStore = transaction?.objectStore('employees');
 
       const request = objectStore?.getAll();
-
       request.onsuccess = (event) => {
         const employees = (event.target as IDBRequest).result;
         observer.next(employees);
@@ -83,8 +82,7 @@ export class EmployeeService {
     return new Observable((observer) => {
       const transaction = this.db?.transaction(['employees'], 'readonly');
       const objectStore = transaction?.objectStore('employees');
-
-      const request = objectStore?.get(id);
+      const request = objectStore?.get(+id);
 
       request.onsuccess = (event) => {
         const employee = (event.target as IDBRequest).result;

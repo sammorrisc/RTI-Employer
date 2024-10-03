@@ -37,4 +37,10 @@ export class EmployeeListComponent implements OnInit {
     this.employees = toSignal(employees$);
     // console.log(this.employees()); 
   }
+  editEmployee(event:Event,id:number){
+    event.stopPropagation();
+    this.router.navigate(['employee-form'],{queryParams:{
+      id
+    }})
+  }
 }
