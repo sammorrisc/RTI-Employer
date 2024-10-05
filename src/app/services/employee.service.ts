@@ -41,7 +41,7 @@ export class EmployeeService {
   }
 
   // Add an employee
-  addEmployee(employee: { name: string; joinedAt: Date; role: string }): Observable<void> {
+  addEmployee(employee: { name: string; joinedAt: number; role: string }): Observable<void> {
     return new Observable((observer) => {
       const transaction = this.db?.transaction(['employees'], 'readwrite');
       const objectStore = transaction?.objectStore('employees');

@@ -7,6 +7,7 @@ import {  filter, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxj
 import { CustomDatepickerHeaderComponent } from 'src/app/components';
 import { CustomDatepickerHeaderRangeComponent } from 'src/app/custom-datepicker-header-range/custom-datepicker-header-range.component';
 import {DatePickerService,EmployeeService} from 'src/app/services';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-employee-form',
@@ -88,8 +89,12 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
         }
       ),
       tap((res)=>{
+        const data = {
+          ...res,
+          joinedAt: new Date(+res.joinedAt)
+        };
         this.employeeId.set(res.id);
-        this.employeeFG.patchValue(res,{emitEvent:false})
+        this.employeeFG.patchValue(data,{emitEvent:false})
       }),
       takeUntil(this.destroy$)
     )
@@ -133,14 +138,18 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
 
   saveDateHandler(event:Event){
     event.stopPropagation();
-    this.employeeService.addEmployee(this.employeeFG.value)
+    const data = {
+      ...this.employeeFG.value,
+      joinedAt: moment(this.employeeFG.get('joinedAt')?.value).toDate()
+    };
+    this.employeeService.addEmployee(data)
     .pipe(
       tap((res) =>{
         this.employeeFG.reset();
       }),
       takeUntil(this.destroy$)
     )
-    .subscribe()
+    .subscribe(); 
   }
 
   cancelHandler(event:Event){

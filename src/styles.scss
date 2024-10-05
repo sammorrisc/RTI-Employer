@@ -21,6 +21,10 @@ body{
     font-family: 'Roboto';
     box-sizing: border-box;
 }
+button:disabled{
+    opacity: 0.6;
+    cursor: none;
+}
 
 button.employee-btn {
     border-radius: 6px;

@@ -52,7 +52,9 @@
 
 <footer>
     <button class="employee-btn transparent-primary" (click)="cancelHandler($event)">Cancel</button>
-    <button class="employee-btn filled-primary" (click)="saveDateHandler($event)" >Save</button>
+    <button class="employee-btn filled-primary" 
+    [disabled]="employeeFG.invalid"
+    (click)="saveDateHandler($event)" >Save</button>
 </footer>
 
 <ion-action-sheet trigger="open-action-sheet" 
