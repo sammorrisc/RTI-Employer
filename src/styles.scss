@@ -23,7 +23,7 @@ body{
 }
 button:disabled{
     opacity: 0.6;
-    cursor: none;
+    cursor: not-allowed;
 }
 
 button.employee-btn {

@@ -42,10 +42,7 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
       },
     },
   ];
-  @ViewChild('startDatePicker',{read:MatDatepicker}) startDatePicker!:MatDatepicker<any>;
-  @ViewChild('endDatePicker') endDatePicker!:MatDatepicker<any>;
   customHeaderForStart = CustomDatepickerHeaderComponent;
-  customHeaderForEnd = CustomDatepickerHeaderRangeComponent;
   employeeFG: FormGroup = new FormGroup({
     name: new FormControl<string>('',{nonNullable:true,validators:[Validators.required]}),
     role: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
@@ -58,12 +55,9 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
   destroy$ = new Subject<boolean>();
   employeeId = signal<null | string>(null);
   constructor(
-    private datePickerService:DatePickerService,
     private employeeService:EmployeeService,
-    private cdr:ChangeDetectorRef,
     private router:Router,
     private activatedRoute:ActivatedRoute,
-    private dateAdapter: DateAdapter<Date>
   ){}
   ngOnInit(): void {
     this.queryParamsHandling();
@@ -87,8 +81,8 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
       tap((res)=>{
         const data = {
           ...res,
-          joinedAt: new Date(+res.joinedAt),
-          leftAt: new Date(+res.leftAt),
+          joinedAt: res.joinedAt ? new Date(+res.joinedAt) : null,
+          leftAt: res.leftAt ? new Date(+res.leftAt) : null,
         };
         this.employeeId.set(res.id);
         this.employeeFG.patchValue(data,{emitEvent:false})
@@ -111,7 +105,6 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
 
   openDatePicker(datePicker:MatDatepicker<any>){
     datePicker.open();
-    this.cdr.detectChanges();
   }
 
   actionSheetDismissHandler(event:any){
