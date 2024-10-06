@@ -1,19 +1,22 @@
 <header class="list fs-16 fw-500">
     Employee List
 </header>
-<ng-container *ngIf="!employees() || (employees() && employees().length === 0)">
+<ng-container *ngIf="
+    (!currentEmployees() || (currentEmployees() && currentEmployees().length === 0)) &&
+    (!previousEmployees() || (previousEmployees() && previousEmployees().length === 0))
+">
     <main class="no-content">
         <img [src]="'/assets/icons/no-employee-records.svg'" alt="">
     </main>
 </ng-container>
-<ng-container *ngIf=" employees() && employees().length > 0">
+<ng-container *ngIf=" currentEmployees() && currentEmployees().length > 0">
     <main >
         <header class="employee-section-heading">Current Employees</header>
         <section class="with-content" cdkDropList>
             <div class="employee-card" 
             cdkDrag
             cdkDragLockAxis="x"
-            *ngFor="let each of employees();index as index" (click)="editEmployee($event,each.id)">
+            *ngFor="let each of currentEmployees();index as index" (click)="editEmployee($event,each.id)">
                 <div class="fw-500 title">
                     {{each.name}}
                 </div>
@@ -22,6 +25,28 @@
                 </div>
                 <div class="fw-400 sub-title">
                     From {{each.joinedAt | date : 'dd MMM, YYYY'}}
+                </div>
+            </div>
+        </section>
+    </main>
+</ng-container>
+<ng-container *ngIf=" previousEmployees() && previousEmployees().length > 0">
+    <main >
+        <header class="employee-section-heading">Previous Employees</header>
+        <section class="with-content" cdkDropList>
+            <div class="employee-card" 
+            cdkDrag
+            cdkDragLockAxis="x"
+            *ngFor="let each of previousEmployees();index as index" (click)="editEmployee($event,each.id)">
+                <div class="fw-500 title">
+                    {{each.name}}
+                </div>
+                <div class="fw-400 sub-title">
+                    {{each.role}}
+                </div>
+                <div class="fw-400 sub-title">
+                    {{each.joinedAt | date : 'dd MMM, YYYY'}} -
+                    {{each.leftAt | date : 'dd MMM, YYYY'}}
                 </div>
             </div>
         </section>

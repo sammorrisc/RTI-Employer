@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, Signal } from '@angular/cor
 import { Router } from '@angular/router';
 import { EmployeeService } from 'src/app/services';
 import {toSignal} from '@angular/core/rxjs-interop'
-import { filter, switchMap, tap } from 'rxjs';
+import { filter, map, shareReplay, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-employee-list',
@@ -11,7 +11,8 @@ import { filter, switchMap, tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmployeeListComponent implements OnInit {
-  employees!:Signal<any>;
+  currentEmployees!:Signal<any>;
+  previousEmployees!:Signal<any>;
   constructor(
     private router:Router,
     private employeeService:EmployeeService
@@ -30,12 +31,22 @@ export class EmployeeListComponent implements OnInit {
       .pipe(
         filter((isReady) => isReady), // Ensure database is ready
         switchMap(() => this.employeeService.getEmployees()),
-        tap(res =>{
-          console.log(res)
-        }) // Once ready, get employees
+        shareReplay()
       );
-    this.employees = toSignal(employees$);
-    // console.log(this.employees()); 
+    const currentEmployees$ = employees$
+    .pipe(
+      map((data)=>{
+        return data.filter((each)=>!each.leftAt)
+      })
+    );
+    const previousEmployees$ = employees$
+    .pipe(
+      map((data)=>{
+        return data.filter((each)=>each.leftAt)
+      })
+    );
+    this.currentEmployees = toSignal(currentEmployees$);
+    this.previousEmployees = toSignal(previousEmployees$);
   }
   editEmployee(event:Event,id:number){
     event.stopPropagation();

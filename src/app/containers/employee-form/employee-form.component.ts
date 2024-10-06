@@ -49,7 +49,7 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
   employeeFG: FormGroup = new FormGroup({
     name: new FormControl<string>('',{nonNullable:true,validators:[Validators.required]}),
     role: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    joinedAt: new FormControl<Date | null>(null),
+    joinedAt: new FormControl<Date | null>(null,{validators:[Validators.required]}),
     leftAt: new FormControl<Date | null>(null),
   });
   isActionSheetOpen:boolean = false;
@@ -123,8 +123,8 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
     event.stopPropagation();
     const data = {
       ...this.employeeFG.value,
-      joinedAt: moment(this.employeeFG.get('joinedAt')?.value).toDate(),
-      leftAt: moment(this.employeeFG.get('leftAt')?.value).toDate()
+      joinedAt: this.employeeFG.get('joinedAt')?.value ? moment(this.employeeFG.get('joinedAt')?.value).toDate() : null,
+      leftAt: this.employeeFG.get('leftAt')?.value ? moment(this.employeeFG.get('leftAt')?.value).toDate() : null
     };
     this.employeeService.addEmployee(data)
     .pipe(
