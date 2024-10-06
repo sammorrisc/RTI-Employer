@@ -50,7 +50,7 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
     name: new FormControl<string>('',{nonNullable:true,validators:[Validators.required]}),
     role: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     joinedAt: new FormControl<Date | null>(null),
-    // leftAt: new FormControl<Date | null>(null),
+    leftAt: new FormControl<Date | null>(null),
   });
   isActionSheetOpen:boolean = false;
   startViewOfStartDate:'month'|'year'|'multi-year'='month';
@@ -66,11 +66,7 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
     private dateAdapter: DateAdapter<Date>
   ){}
   ngOnInit(): void {
-    this.headerInputController();
     this.queryParamsHandling();
-    // this.headerOutputController();
-
-    
   }
 
   ngOnDestroy(): void {
@@ -91,7 +87,8 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
       tap((res)=>{
         const data = {
           ...res,
-          joinedAt: new Date(+res.joinedAt)
+          joinedAt: new Date(+res.joinedAt),
+          leftAt: new Date(+res.leftAt),
         };
         this.employeeId.set(res.id);
         this.employeeFG.patchValue(data,{emitEvent:false})
@@ -108,20 +105,6 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
       filter((val)=>!!val)
     );
   }
-  private headerInputController(){
-    this.employeeFG.get('joinedAt')?.valueChanges
-    .pipe(
-      tap((joinedAtDate)=>{
-        const data = {
-          currentDate: joinedAtDate
-        }
-        this.datePickerService.customHeaderInput.next(data);
-      }),
-      takeUntil(this.destroy$)
-    )
-    .subscribe();
-  }
-
   openActionSheet(){
     this.isActionSheetOpen = !this.isActionSheetOpen;
   }
@@ -140,7 +123,8 @@ export class EmployeeFormComponent implements OnInit,OnDestroy{
     event.stopPropagation();
     const data = {
       ...this.employeeFG.value,
-      joinedAt: moment(this.employeeFG.get('joinedAt')?.value).toDate()
+      joinedAt: moment(this.employeeFG.get('joinedAt')?.value).toDate(),
+      leftAt: moment(this.employeeFG.get('leftAt')?.value).toDate()
     };
     this.employeeService.addEmployee(data)
     .pipe(

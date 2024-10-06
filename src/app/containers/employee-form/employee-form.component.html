@@ -16,36 +16,71 @@
             <img [src]="'/assets/icons/brief-case.svg'"/>
         </label>
     </div>
-    <div class="position-relative field">
-        <input matInput [matDatepicker]="startDatePicker"
-        (click)="openDatePicker(startDatePicker)"
-        formControlName="joinedAt" id="joinedAt" />
-        <label for="joinedAt">
-            <img [src]="'/assets/icons/calendar-icon.svg'" />
-        </label>
-        <mat-datepicker #startDatePicker
-        [startView]="startViewOfStartDate"
-        [startAt]="startAt"
-        [calendarHeaderComponent]="customHeaderForStart"
-        >
-            <mat-datepicker-actions>
-                <div class="d-flex gap-1">
-                    <div class="icon-calendar">
-                        <img [src]="'/assets/icons/brief-case.svg'"/>
+    <div class="d-flex gap-2">
+        <div class="position-relative field">
+            <input matInput [matDatepicker]="startDatePicker"
+            (click)="openDatePicker(startDatePicker)"
+            formControlName="joinedAt" id="joinedAt" />
+            <label for="joinedAt">
+                <img [src]="'/assets/icons/calendar-icon.svg'" />
+            </label>
+            <mat-datepicker #startDatePicker
+            [startView]="startViewOfStartDate"
+            [startAt]="startAt"
+            [calendarHeaderComponent]="customHeaderForStart"
+            >
+                <mat-datepicker-actions>
+                    <div class="d-flex gap-1">
+                        <div class="icon-calendar">
+                            <img [src]="'/assets/icons/brief-case.svg'"/>
+                        </div>
+                        <div class="value-holder">{{employeeFG.get('joinedAt')?.value | date}}</div>
                     </div>
-                    <div class="value-holder">{{employeeFG.get('joinedAt')?.value | date}}</div>
-                </div>
-                <div class="d-flex gap-1">
-                    <button 
-                    matDatepickerCancel
-                    class="employee-btn transparent-primary">Cancel</button>
-                    <button
-                    matDatepickerApply
-                    class="employee-btn filled-primary"
-                    >Save</button>
-                </div>
-            </mat-datepicker-actions>
-        </mat-datepicker>
+                    <div class="d-flex gap-1">
+                        <button
+                        matDatepickerCancel
+                        class="employee-btn transparent-primary">Cancel</button>
+                        <button
+                        matDatepickerApply
+                        class="employee-btn filled-primary"
+                        >Save</button>
+                    </div>
+                </mat-datepicker-actions>
+            </mat-datepicker>
+        </div>
+        <img [src]="'/assets/icons/right-arrow.svg'" class="right-arrow"alt="">
+        <div class="position-relative field">
+            <input matInput [matDatepicker]="endDatePicker"
+            [min]="employeeFG.get('joinedAt')?.value"
+            (click)="openDatePicker(endDatePicker)"
+            formControlName="leftAt" id="leftAt" />
+            <label for="leftAt">
+                <img [src]="'/assets/icons/calendar-icon.svg'" />
+            </label>
+            <mat-datepicker #endDatePicker
+            [startView]="startViewOfStartDate"
+            [startAt]="employeeFG.get('joinedAt')?.value ?? startAt"
+            [calendarHeaderComponent]="customHeaderForStart"
+            >
+                <mat-datepicker-actions>
+                    <div class="d-flex gap-1">
+                        <div class="icon-calendar">
+                            <img [src]="'/assets/icons/brief-case.svg'"/>
+                        </div>
+                        <div class="value-holder">{{employeeFG.get('leftAt')?.value | date}}</div>
+                    </div>
+                    <div class="d-flex gap-1">
+                        <button
+                        matDatepickerCancel
+                        class="employee-btn transparent-primary">Cancel</button>
+                        <button
+                        matDatepickerApply
+                        class="employee-btn filled-primary"
+                        >Save</button>
+                    </div>
+                </mat-datepicker-actions>
+            </mat-datepicker>
+        </div>
     </div>
 
 </main>
