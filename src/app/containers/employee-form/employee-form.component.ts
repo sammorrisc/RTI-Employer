@@ -1,12 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DateAdapter } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  filter, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { CustomDatepickerHeaderComponent } from 'src/app/components';
-import { CustomDatepickerHeaderRangeComponent } from 'src/app/custom-datepicker-header-range/custom-datepicker-header-range.component';
-import {DatePickerService,EmployeeService} from 'src/app/services';
+import {EmployeeService} from 'src/app/services';
 import * as moment from 'moment';
 
 @Component({

@@ -17,7 +17,6 @@ import { AppComponent } from './app.component';
 import * as appComponents from './components';
 import * as appContainers from './containers';
 import { AppRoutingModule } from './app.routes';
-import { CustomDatepickerHeaderRangeComponent } from './custom-datepicker-header-range/custom-datepicker-header-range.component';
 import * as constantData from 'src/data/data';
 
 @NgModule({
@@ -25,7 +24,6 @@ import * as constantData from 'src/data/data';
     AppComponent,
     ...appComponents.components,
     ...appContainers.containers,
-    CustomDatepickerHeaderRangeComponent,
   ],
   imports: [
     BrowserModule,
